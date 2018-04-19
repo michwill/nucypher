@@ -1,15 +1,15 @@
 pragma solidity ^0.4.18;
 
 
-import "./zeppelin/token/ERC20/SafeERC20.sol";
-import "./zeppelin/math/Math.sol";
+import "zeppelin/token/ERC20/SafeERC20.sol";
+import "zeppelin/math/Math.sol";
 import "./lib/AdditionalMath.sol";
-import "./Issuer.sol";
-import "./PolicyManager.sol";
+import "contracts/Issuer.sol";
+import "contracts/PolicyManager.sol";
 
 
 /**
-* @notice Contract holds and locks nodes tokens.
+* @notice Contract holds and locks nodes tokens.self._solidity_source_dir
 Each node that lock its tokens will receive some compensation
 **/
 contract MinersEscrow is Issuer {
