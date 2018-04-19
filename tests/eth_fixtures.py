@@ -5,8 +5,9 @@ from os.path import abspath, dirname
 import pytest
 import shutil
 from eth_tester import EthereumTester, PyEVMBackend
-from geth import DevGethProcess
+from geth import DevGethProcess, LoggingMixin
 from web3 import EthereumTesterProvider, IPCProvider
+from web3.middleware import geth_poa_middleware
 
 from nkms.blockchain.eth.agents import NuCypherKMSTokenAgent, MinerAgent
 from nkms.blockchain.eth.agents import PolicyAgent
@@ -117,7 +118,7 @@ def mock_miner_escrow_deployer(token_agent):
 
 @pytest.fixture()
 def mock_policy_manager_deployer(mock_miner_escrow_deployer):
-    policy_manager_deployer = PolicyManagerDeployer(miner_escrow_deployer=mock_token_deployer)
+    policy_manager_deployer = PolicyManagerDeployer(miner_agent=mock_token_deployer)
     policy_manager_deployer.arm()
     policy_manager_deployer.deploy()
     yield policy_manager_deployer
