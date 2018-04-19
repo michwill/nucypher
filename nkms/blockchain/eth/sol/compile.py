@@ -65,9 +65,7 @@ class SolidityCompiler:
         compiled_interfaces = compile_files(source_files=source_paths,
                                             import_remappings=remappings,
                                             allow_paths=project_root,
-                                            )
-                                            # libraries="AdditionalMath:0x00000000000000000000 Heap:0xABCDEF0123456"
-                                            #           "LinkedList::0x00000000000000000000 Heap:0xABCDEF0123456")
+                                            optimize=True)
 
         # Cleanup the compiled data keys
         interfaces = {name.split(':')[-1]: compiled_interfaces[name] for name in compiled_interfaces}

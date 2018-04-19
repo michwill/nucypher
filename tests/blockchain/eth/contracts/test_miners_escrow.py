@@ -344,11 +344,11 @@ def test_locked_distribution(web3, chain, token, escrow_contract):
     amount = token.call().balanceOf(creator) // 2
     largest_locked = amount
 
-    # Airdrop
-    for miner in miners:
-        tx = token.transact({'from': creator}).transfer(miner, amount)
-        chain.wait_for_receipt(tx)
-        amount = amount // 2
+    # # Airdrop
+    # for miner in miners:
+    #     tx = token.transact({'from': creator}).transfer(miner, amount)
+    #     chain.wait_for_receipt(tx)
+    #     amount = amount // 2
 
     # Lock
     for index, miner in enumerate(miners):
