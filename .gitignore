@@ -16,3 +16,5 @@ _temp_test_datastore
 /registrar.json
 /dist
 chains
+.ethash/
+geth-linux*
