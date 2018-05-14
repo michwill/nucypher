@@ -129,6 +129,8 @@ class TesterBlockchain(TheBlockchain):
             tx = {'to': address, 'from': coinbase, 'value': amount}
             txhash = self.provider.w3.eth.sendTransaction(tx)
             tx_hashes.append(txhash)
+        for txhash in tx_hashes:
+            self.wait_for_receipt(txhash)
         return tx_hashes
 
 #
