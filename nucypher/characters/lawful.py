@@ -1,11 +1,11 @@
-import binascii
 import random
+import maya
+
 from collections import OrderedDict
 from functools import partial
-from typing import Iterable, Callable
+from typing import Iterable
 from typing import List
 
-import maya
 from bytestring_splitter import BytestringSplitter, VariableLengthBytestring
 from constant_sorrow import constants
 from cryptography.hazmat.backends import default_backend
@@ -304,7 +304,7 @@ class Bob(Character):
 
             capsules_to_include = []
             for capsule in capsules:
-                if not capsule in self._saved_work_orders[node_id]:
+                if capsule not in self._saved_work_orders[node_id]:
                     capsules_to_include.append(capsule)
 
             if capsules_to_include:
