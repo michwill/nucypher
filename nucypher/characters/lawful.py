@@ -345,6 +345,7 @@ class Bob(Character):
             verifying=alice_verifying_key)
 
         hrac, map_id = self.construct_hrac_and_map_id(alice_verifying_key, data_source.label)
+        m = self.treasure_maps[map_id].m
         self.follow_treasure_map(map_id=map_id, block=True)
 
         work_orders = self.generate_work_orders(map_id, message_kit.capsule)
@@ -353,6 +354,14 @@ class Bob(Character):
 
         for cfrags in map(self.get_reencrypted_cfrags, work_orders.values()):
             message_kit.capsule.attach_cfrag(cfrags[0])
+
+            m -= 1
+            if m <= 0:
+                # Stop the loop once we've got m cfrags, that's enough
+                # Ideally, here's the place where we should try to decrypt
+                # and handle incorrect cfrags
+                # (e.g. if incorrect, get one more)
+                break
 
         delivered_cleartext = self.verify_from(data_source,
                                                message_kit,

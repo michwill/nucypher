@@ -67,8 +67,12 @@ with tempfile.TemporaryDirectory() as certificate_dir:
     policy_end_datetime = maya.now() + datetime.timedelta(days=5)
     m = 4
     n = 7
-    map_func = pool.map  # or just `map` if you want to do in series
+    # map_func = map  ~ for queries in series
+    # map_func = pool.map  ~ to do all the n queries
+    # map_func = pool.imap_unordered ~ continue as soon as m queries are done
+    map_func = pool.imap_unordered
     label = b"secret/files/and/stuff"
+    filename = sys.argv[1]
 
     # Alice grants to Bob.
     BOB = Bob(
@@ -108,7 +112,7 @@ with tempfile.TemporaryDirectory() as certificate_dir:
 
     # Now that Bob has joined the Policy, let's show how DataSources
     # can share data with the members of this Policy and then how Bob retrieves it.
-    finnegans_wake = open(sys.argv[1], 'rb')
+    finnegans_wake = open(filename, 'rb')
 
     # We'll also keep track of some metadata to gauge performance.
     # You can safely ignore from here until...
