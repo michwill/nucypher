@@ -336,7 +336,8 @@ class Bob(Character):
         treasure_map = self.get_treasure_map(alice_pubkey_sig, label)
         self.follow_treasure_map(treasure_map=treasure_map)
 
-    def retrieve(self, message_kit, data_source, alice_verifying_key):
+    def retrieve(self, message_kit, data_source, alice_verifying_key,
+                 map=map):
 
         message_kit.capsule.set_correctness_keys(
             delegating=data_source.policy_pubkey,
@@ -350,8 +351,7 @@ class Bob(Character):
 
         cleartexts = []
 
-        for work_order in work_orders.values():
-            cfrags = self.get_reencrypted_cfrags(work_order)
+        for cfrags in map(self.get_reencrypted_cfrags, work_orders.values()):
             message_kit.capsule.attach_cfrag(cfrags[0])
 
         delivered_cleartext = self.verify_from(data_source,
