@@ -110,10 +110,7 @@ class AliceInterface(CharacterPublicInterface, AliceSpecification):
                                           value=value,
                                           expiration=expiration)
 
-        response_data = {'treasure_map': new_policy.treasure_map,
-                         'policy_encrypting_key': new_policy.public_key,
-                         'alice_verifying_key': new_policy.alice.stamp,
-                         'policy_credential': new_policy.credential()}
+        response_data = new_policy.credential.to_json()
         return response_data
 
     def revoke(self, treasure_map: bytes) -> dict:
@@ -233,4 +230,3 @@ class EnricoInterface(CharacterPublicInterface, EnricoSpecification):
         message_kit, signature = self.enrico.encrypt_message(bytes(message, encoding='utf-8'))
         response_data = {'message_kit': message_kit, 'signature': signature}
         return response_data
-
