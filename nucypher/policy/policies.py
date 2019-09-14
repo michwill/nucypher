@@ -1,19 +1,15 @@
-import math
 import random
 from abc import abstractmethod, ABC
 from collections import OrderedDict, deque
-from random import SystemRandom
 from typing import Generator, Set, List
 
 import maya
 from bytestring_splitter import BytestringSplitter, VariableLengthBytestring
-from constant_sorrow.constants import NOT_SIGNED, UNKNOWN_KFRAG, FEDERATED_POLICY, UNKNOWN_ARRANGEMENTS
+from constant_sorrow.constants import NOT_SIGNED, UNKNOWN_KFRAG
 from umbral.keys import UmbralPublicKey
 from umbral.kfrags import KFrag
 
-from nucypher.blockchain.eth.actors import BlockchainPolicyAuthor, Staker
-from nucypher.blockchain.eth.agents import StakingEscrowAgent, PolicyManagerAgent
-from nucypher.blockchain.eth.utils import calculate_period_duration
+from nucypher.blockchain.eth.agents import StakingEscrowAgent
 from nucypher.characters.lawful import Alice, Ursula
 from nucypher.crypto.api import secure_random, keccak_digest
 from nucypher.crypto.constants import PUBLIC_KEY_LENGTH
@@ -291,7 +287,6 @@ class Policy(ABC):
         return PolicyCredential(self.alice.stamp, self.label, self.expiration,
                                 self.public_key, treasure_map)
 
-
     def __assign_kfrags(self) -> Generator[Arrangement, None, None]:
 
         if len(self._accepted_arrangements) < self.n:
@@ -300,7 +295,7 @@ class Policy(ABC):
 
         for kfrag in self.kfrags:
             for arrangement in self._accepted_arrangements:
-                if not arrangement in self._enacted_arrangements.values():
+                if arrangement not in self._enacted_arrangements.values():
                     arrangement.kfrag = kfrag
                     self._enacted_arrangements[kfrag] = arrangement
                     yield arrangement
