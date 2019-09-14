@@ -110,7 +110,7 @@ class AliceInterface(CharacterPublicInterface, AliceSpecification):
                                           value=value,
                                           expiration=expiration)
 
-        response_data = new_policy.credential.to_json()
+        response_data = new_policy.credential.to_dict()
         return response_data
 
     def revoke(self, treasure_map: bytes) -> dict:

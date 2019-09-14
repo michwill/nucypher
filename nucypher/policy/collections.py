@@ -20,6 +20,7 @@ import binascii
 import json
 import maya
 import msgpack
+from base64 import b64encode
 from bytestring_splitter import BytestringSplitter, VariableLengthBytestring
 from constant_sorrow.constants import NO_DECRYPTION_PERFORMED
 from cryptography.hazmat.backends.openssl import backend
@@ -250,6 +251,15 @@ class PolicyCredential:
         self.policy_encrypting_key = policy_encrypting_key
         self.treasure_map = treasure_map
 
+    def to_dict(self):
+        """
+        Serializes the PolicyCredential to dict.
+        """
+        return {n: getattr(self, n)
+                for n in ['alice_verifying_key', 'policy_encrypting_key',
+                          'treasure_map', 'label', 'expiration']
+                if getattr(self, n) is not None}
+
     def to_json(self):
         """
         Serializes the PolicyCredential to JSON.
@@ -262,9 +272,9 @@ class PolicyCredential:
         }
 
         if self.treasure_map is not None:
-            cred_dict['treasure_map'] = self.treasure_map._TreasureMap__serialize().hex()
+            cred_dict['treasure_map'] = b64encode(bytes(self.treasure_map)).decode()
 
-        return json.dumps(cred_dict)
+        return cred_dict
 
     @classmethod
     def from_json(cls, data: str):
