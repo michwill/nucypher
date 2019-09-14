@@ -126,18 +126,12 @@ class AliceControlJSONSerializer(CharacterControlJSONSerializer, MessageHandlerM
 
     @staticmethod
     def dump_grant_output(response: dict):
-        treasure_map_base64 = b64encode(bytes(response['treasure_map'])).decode()
-
-        # FIXME: Differences in bytes casters by default :-(
-        policy_encrypting_key_hex = bytes(response['policy_encrypting_key']).hex()
-        alice_verifying_key_hex = bytes(response['alice_verifying_key']).hex()
-
-        response_data = {'treasure_map': treasure_map_base64,
-                         'policy_encrypting_key': policy_encrypting_key_hex,
-                         'alice_verifying_key': alice_verifying_key_hex,
-                         'policy_credential': response['policy_credential'].to_json()}
-
-        return response_data
+        return dict(
+            treasure_map=b64encode(bytes(response['treasure_map'])).decode(),
+            policy_encrypting_key=bytes(response['policy_encrypting_key']).hex(),
+            alice_verifying_key=bytes(response['alice_verifying_key']).hex(),
+            label=bytes(response['label']).hex(),
+            expiration=response['expiration'].iso8601())
 
     @staticmethod
     def parse_revoke_input(request: dict):
