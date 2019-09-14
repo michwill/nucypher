@@ -242,12 +242,12 @@ class PolicyCredential:
     to utilize the policy on the network that the credential describes.
     """
 
-    def __init__(self, alice_verifying_key, label, expiration, policy_pubkey,
+    def __init__(self, alice_verifying_key, label, expiration, policy_encrypting_key,
                  treasure_map=None):
         self.alice_verifying_key = alice_verifying_key
         self.label = label
         self.expiration = expiration
-        self.policy_pubkey = policy_pubkey
+        self.policy_encrypting_key = policy_encrypting_key
         self.treasure_map = treasure_map
 
     def to_json(self):
@@ -258,7 +258,7 @@ class PolicyCredential:
             'alice_verifying_key': bytes(self.alice_verifying_key).hex(),
             'label': self.label.hex(),
             'expiration': self.expiration.iso8601(),
-            'policy_pubkey': bytes(self.policy_pubkey).hex()
+            'policy_encrypting_key': bytes(self.policy_encrypting_key).hex()
         }
 
         if self.treasure_map is not None:
@@ -275,26 +275,26 @@ class PolicyCredential:
 
         alice_verifying_key = UmbralPublicKey.from_bytes(
                                     cred_json['alice_verifying_key'],
-                                    decoder=bytes().fromhex)
-        label = bytes().fromhex(cred_json['label'])
+                                    decoder=bytes.fromhex)
+        label = bytes.fromhex(cred_json['label'])
         expiration = maya.MayaDT.from_iso8601(cred_json['expiration'])
-        policy_pubkey = UmbralPublicKey.from_bytes(
-                            cred_json['policy_pubkey'],
-                            decoder=bytes().fromhex)
+        policy_encrypting_key = UmbralPublicKey.from_bytes(
+                            cred_json['policy_encrypting_key'],
+                            decoder=bytes.fromhex)
         treasure_map = None
 
         if 'treasure_map' in cred_json:
             treasure_map = TreasureMap._TreasureMap__deserialize(
-                                bytes().fromhex(cred_json['treasure_map']))
+                                bytes.fromhex(cred_json['treasure_map']))
 
-        return cls(alice_verifying_key, label, expiration, policy_pubkey,
+        return cls(alice_verifying_key, label, expiration, policy_encrypting_key,
                    treasure_map)
 
     def __eq__(self, other):
         return ((self.alice_verifying_key == other.alice_verifying_key) and
                 (self.label == other.label) and
                 (self.expiration == other.expiration) and
-                (self.policy_pubkey == other.policy_pubkey))
+                (self.policy_encrypting_key == other.policy_encrypting_key))
 
 
 class WorkOrder:
