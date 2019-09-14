@@ -275,7 +275,7 @@ class PolicyCredential:
             cred_dict['treasure_map'] = b64encode(
                     self.treasure_map._TreasureMap__serialize()).decode()
 
-        return cred_dict
+        return json.dumps(cred_dict)
 
     @classmethod
     def from_json(cls, data: str):

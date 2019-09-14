@@ -77,7 +77,7 @@ def test_decentralized_grant(blockchain_alice, blockchain_bob, agency):
     assert credential.alice_verifying_key == policy.alice.stamp
     assert credential.label == policy.label
     assert credential.expiration == policy.expiration
-    assert credential.policy_pubkey == policy.public_key
+    assert credential.policy_encrypting_key == policy.public_key
     assert credential.treasure_map is None
 
     cred_json = credential.to_json()
