@@ -69,7 +69,8 @@ def test_alice_web_character_control_grant(alice_web_controller_test_client, gra
     assert 'treasure_map' in response_data['result']
     assert 'policy_encrypting_key' in response_data['result']
     assert 'alice_verifying_key' in response_data['result']
-    assert 'policy_credential' in response_data['result']
+    assert 'expiration' in response_data['result']
+    assert 'label' in response_data['result']
 
     map_bytes = b64decode(response_data['result']['treasure_map'])
     encrypted_map = TreasureMap.from_bytes(map_bytes)
@@ -99,12 +100,11 @@ def test_alice_character_control_revoke(alice_web_controller_test_client, federa
     response = alice_web_controller_test_client.put('/grant', data=json.dumps(grant_request_data))
     assert response.status_code == 200
 
-    policy_credential = PolicyCredential.from_json(
-                                response.json['result']['policy_credential'])
+    policy_credential = PolicyCredential.from_json(response.json['result'])
 
-    treasure_map_b64 = b64encode(policy_credential.treasure_map._TreasureMap__serialize())
+    treasure_map_b64 = b64encode(bytes(policy_credential.treasure_map)).decode()
     revoke_request_data = {
-        'treasure_map': treasure_map_b64.decode(),
+        'treasure_map': treasure_map_b64,
     }
 
     response = alice_web_controller_test_client.delete('/revoke', data=json.dumps(revoke_request_data))
