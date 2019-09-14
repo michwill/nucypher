@@ -20,7 +20,7 @@ import binascii
 import json
 import maya
 import msgpack
-from base64 import b64encode
+from base64 import b64encode, b64decode
 from bytestring_splitter import BytestringSplitter, VariableLengthBytestring
 from constant_sorrow.constants import NO_DECRYPTION_PERFORMED
 from cryptography.hazmat.backends.openssl import backend
@@ -295,7 +295,7 @@ class PolicyCredential:
 
         if 'treasure_map' in cred_json:
             treasure_map = TreasureMap._TreasureMap__deserialize(
-                                bytes.fromhex(cred_json['treasure_map']))
+                                b64decode(cred_json['treasure_map']))
 
         return cls(alice_verifying_key, label, expiration, policy_encrypting_key,
                    treasure_map)
