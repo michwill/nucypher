@@ -272,7 +272,8 @@ class PolicyCredential:
         }
 
         if self.treasure_map is not None:
-            cred_dict['treasure_map'] = b64encode(bytes(self.treasure_map)).decode()
+            cred_dict['treasure_map'] = b64encode(
+                    self.treasure_map._TreasureMap__serialize()).decode()
 
         return cred_dict
 
